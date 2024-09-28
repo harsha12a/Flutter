@@ -23,9 +23,8 @@ class TicTacToe extends StatefulWidget {
 }
 
 class _TicTacToeState extends State<TicTacToe> {
-
   List<String> board = List.filled(9, '', growable: false);
-  String gameRes='';
+  String gameRes = '';
   bool isX = false;
   @override
   Widget build(BuildContext context) {
@@ -37,44 +36,46 @@ class _TicTacToeState extends State<TicTacToe> {
       body: gamePlan(),
     );
   }
+
   Widget gamePlan() {
     return Column(
       children: [
         Expanded(
           child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemCount: 9,
-              itemBuilder: (context , index) => GestureDetector(
-                onTap: () => _handleTap(index: index),
-                child: Container(
-                  margin: EdgeInsets.all(4),
-                  color: Colors.green,
-                  child: Center(
-                    child: Text(
-                      board[index],
-                      style: TextStyle(fontSize: 80 , color: Colors.red),
+              itemBuilder: (context, index) => GestureDetector(
+                    onTap: () => _handleTap(index: index),
+                    child: Container(
+                      margin: EdgeInsets.all(4),
+                      color: Colors.green,
+                      child: Center(
+                        child: Text(
+                          board[index],
+                          style: TextStyle(fontSize: 80, color: Colors.red),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              )
-          ),
+                  )),
         ),
         Padding(
           padding: EdgeInsets.all(16),
-          child: Text(gameRes, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+          child: Text(
+            '$gameRes',
+            style: TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ),
-        ElevatedButton(
-            onPressed: _reset,
-            child: Text('Restart Game')
-        ),
+        ElevatedButton(onPressed: _reset, child: Text('Restart Game')),
       ],
     );
   }
 
   void _handleTap({required int index}) {
-    if(board[index] == '' && gameRes == ''){
+    if (board[index] == '' && gameRes == '') {
       setState(() {
-        board[index] = isX ? '✗' : '𝘰' ;
+        board[index] = isX ? 'X' : 'O';
         isX = !isX;
         gameRes = _checkWinner();
       });
@@ -83,22 +84,23 @@ class _TicTacToeState extends State<TicTacToe> {
 
   String _checkWinner() {
     const winPatterns = [
-      [0 ,1 ,2],
-      [3 ,4 ,5],
-      [6 ,7 ,8],
-      [0 ,3 ,6],
-      [1 ,4 ,7],
-      [2 ,5 ,8],
-      [0 ,4 ,8],
-      [2 ,4 ,6]
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
     ];
-    for(var pattern in winPatterns) {
+    for (var pattern in winPatterns) {
       if (board[pattern[0]] == board[pattern[1]] &&
-          board[pattern[1]] == board[pattern[2]] && board[pattern[0]] != '') {
+          board[pattern[1]] == board[pattern[2]] &&
+          board[pattern[0]] != '') {
         return 'Player ${board[pattern[0]]} wins';
       }
     }
-    if(!board.contains('')){
+    if (!board.contains('')) {
       return 'It\'s a Draw';
     }
     return '';
